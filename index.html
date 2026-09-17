@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>미리교과서 소개</title>
+<style>
+  :root{
+    --bg: #05070f;
+    --bg-2: #0a0e1c;
+    --line: rgba(255,255,255,0.08);
+    --text-dim: rgba(230,232,245,0.55);
+    --accent: #b9a6ff;
+  }
+  *{ box-sizing: border-box; }
+  html, body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: #e7e8f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width:100%; }
+  [hidden]{ display:none !important; }
+
+  .top-bar{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding: 12px 16px;
+    background: rgba(5,7,15,0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-bar .brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .top-bar .dot{
+    width:6px; height:6px; border-radius:50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px 1px var(--accent);
+    flex: none;
+  }
+  .top-bar .brand span{
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+  .gen-toggle{
+    appearance:none;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-dim);
+    font-size: 11.5px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    padding: 7px 12px;
+    border-radius: 999px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .gen-toggle:hover{ color:#e7e8f5; border-color: rgba(185,166,255,0.5); }
+
+  .gen-panel{
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 16px 20px;
+  }
+  .gen-panel .gen-desc{
+    margin: 0 0 14px;
+    font-size: 12.5px;
+    line-height:1.6;
+    color: var(--text-dim);
+  }
+  .gen-panel label{
+    display:block;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .gen-panel input[type="text"],
+  .gen-panel input[type="tel"]{
+    display:block;
+    width:100%;
+    margin-top:6px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.05);
+    color: #e7e8f5;
+    font-size: 14px;
+  }
+  .gen-result{
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+  .gen-result-label{
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .gen-result-row{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .gen-result-row input{
+    flex: 1 1 180px;
+    min-width: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.05);
+    color: var(--accent);
+    font-size: 12.5px;
+  }
+  .gen-result-row button{
+    appearance:none;
+    border: 1px solid rgba(185,166,255,0.5);
+    background: rgba(185,166,255,0.12);
+    color: #e7e8f5;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight:600;
+    cursor:pointer;
+    flex: none;
+  }
+  .gen-copied{
+    display:block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .gen-hint{
+    margin: 6px 0 0;
+    font-size: 11.5px;
+    color: rgba(230,232,245,0.4);
+  }
+
+  .academy-banner{
+    position: sticky;
+    top: 45px;
+    z-index: 19;
+    padding: 10px 16px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    background: rgba(185,166,255,0.14);
+    border-bottom: 1px solid rgba(185,166,255,0.3);
+  }
+  .academy-banner strong{
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  main{
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+
+  .slide{
+    display:block;
+    line-height:0;
+  }
+  .slide img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .cta-wrap{
+    padding: 28px 16px 40px;
+    text-align:center;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  }
+  .cta-wrap p{
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height:1.6;
+  }
+  .cta-btn{
+    display:inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #7c6cf0, #b9a6ff);
+    color: #0a0a14;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration:none;
+    box-shadow: 0 8px 24px -8px rgba(124,108,240,0.6);
+  }
+
+  footer{
+    padding: 18px 16px 24px;
+    text-align:center;
+    font-size: 11px;
+    color: rgba(230,232,245,0.35);
+    background: var(--bg-2);
+  }
+  .academy-box{
+    margin: 0 16px 20px;
+    padding: 26px 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(185,166,255,0.4);
+    background: linear-gradient(160deg, rgba(185,166,255,0.16), rgba(124,108,240,0.06));
+    box-shadow: 0 12px 32px -16px rgba(124,108,240,0.5);
+    text-align:center;
+  }
+  .academy-box .academy-label{
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .academy-box .academy-name{
+    font-size: 26px;
+    line-height:1.3;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 12px;
+    word-break: keep-all;
+  }
+  .academy-box .academy-tel a{
+    display:inline-block;
+    color: #0a0a14;
+    background: linear-gradient(135deg, #7c6cf0, #b9a6ff);
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand">
+    <span class="dot"></span>
+    <span>미리교과서</span>
+  </div>
+  <button id="linkGenToggle" class="gen-toggle" type="button" aria-expanded="false">링크 만들기</button>
+</div>
+
+<div id="academyBanner" class="academy-banner" hidden>
+  이 링크는 <strong id="academyBannerName"></strong>에서 보내드렸어요
+</div>
+
+<div id="genPanel" class="gen-panel" hidden>
+  <p class="gen-desc">학원 정보를 입력하면 이 페이지 내용은 그대로 두고, 링크 하단에 학원 정보만 표시되는 전용 링크를 만들어 드려요. 학부모님께는 이 링크를 보내주세요.</p>
+  <label>학원명
+    <input id="genName" type="text" placeholder="예: 미래학원" maxlength="30" />
+  </label>
+  <label>연락처
+    <input id="genTel" type="tel" placeholder="예: 02-1234-5678" maxlength="20" />
+  </label>
+  <p class="gen-hint">학원명을 입력하면 아래에 전용 링크가 바로 만들어져요. 입력 내용을 바꾸면 링크도 즉시 바뀝니다.</p>
+  <div id="genResult" class="gen-result" hidden>
+    <div class="gen-result-label">이 학원의 전용 링크</div>
+    <div class="gen-result-row">
+      <input id="genUrl" type="text" readonly />
+      <button id="genCopy" type="button">복사</button>
+    </div>
+    <span id="genCopied" class="gen-copied" hidden>복사됐어요! 이 링크를 학부모님께 보내주세요.</span>
+  </div>
+</div>
+
+<main>
+  <section class="slide">
+    <img src="01.png" alt="미리교과서 학부모님께 드리는 안내. 수학도 영어도 놓칠 수 없으니까, 문해력은 자꾸 다음이 됩니다. 아이에게 필요한 공부는 많지만 시간과 비용은 한정되어 있습니다. 문해력까지 따로 챙기기는 쉽지 않습니다. 그런데 문해력은 정말 하나 더 해야 하는 공부일까요?" />
+  </section>
+  <section class="slide">
+    <img src="02.png" alt="달라지는 학교 공부. 학교 공부는 이제 정답을 고르는 것만으로 끝나지 않습니다. 교과서와 자료를 읽고, 필요한 정보를 찾고, 자신의 생각을 근거와 함께 설명해야 합니다. 수학: 문제의 조건을 정확히 읽기. 사회·과학: 개념과 자료를 연결하기. 서술형·수행평가: 근거를 들어 설명하기. 읽기 → 찾기 → 설명하기. 결국 모든 교과에서 필요한 것은 읽고 이해하고 설명하는 힘입니다." />
+  </section>
+  <section class="slide">
+    <img src="03.png" alt="문해력, 어디서부터? 문해력이라고 하면 독서와 글쓰기부터 떠올립니다. 독서, 글쓰기, 독서논술. 가장 바라는 효과는? 학교 공부를 위한 문해력 — 교과서를 읽고 배울 내용을 이해하기. 교과서를 스스로 읽고, 배울 내용을 이해하는 힘, 미리교과서가 먼저 키우는 문해력입니다." />
+  </section>
+  <section class="slide">
+    <img src="04.png" alt="학교 공부를 위한 문해력의 시작. 그래서 미리교과서는 문해력을 학교 공부와 따로 떼어놓지 않았습니다. 학교에서 처음 배우기 전에, 교과 어휘와 교과 내용을 미리 만납니다. 자기 학년 교과 어휘, 학교에서 배울 교과 내용, 하루 약 10분 모바일 예습. 문해력 공부를 하나 더하는 것이 아니라, 학교 공부를 더 잘 이해하도록 준비합니다." />
+  </section>
+  <section class="slide">
+    <img src="05.png" alt="교과 어휘를 먼저 익히는 이유. 교과 어휘를 알면, 읽기의 초점이 단어에서 내용으로 옮겨갑니다. 모르는 단어에서 자꾸 멈추면 문장의 흐름과 전체 내용을 놓치기 쉽습니다. 처음 보는 교과서 vs 미리 만나본 교과서. 한 단어를 미리 알았을 뿐인데, 같은 교과서를 읽는 과정이 달라집니다. 단어에서 멈추는 읽기에서, 내용을 이해하는 읽기로." />
+  </section>
+  <section class="slide">
+    <img src="06.png" alt="하루 약 10분, 이렇게 학습합니다. 부담은 짧게, 교과서 예습은 차근차근. 1. 뜻·예문 확인 2. 짝 맞추기 3. 글자 맞추기 4. 뜻 맞히기 5. 교과 지문 읽기 6. OX 퀴즈 7. 객관식 문제. 어휘에서 교과 지문까지, 하루 약 10분이면 완성하는 국사과 예습. 단계별 안내, 자동 채점, 학습 결과 기록." />
+  </section>
+  <section class="slide">
+    <img src="07.png" alt="오늘의 10분이 내일도 이어질 수 있도록. 오늘의 학습을 완료하면 별을 얻고, 별이 모여 나만의 별자리가 완성됩니다. 경쟁심을 자극하는 학년별 랭킹. 매일의 완료가 별이 되고, 별이 모여 학습 기록이 됩니다. 미리교과서가 만드는 학습의 변화: 1) 교과 어휘가 익숙해집니다 2) 교과서를 읽는 흐름이 이어집니다 3) 학교 수업의 이해가 한결 수월해집니다." />
+  </section>
+
+  <div class="cta-wrap">
+    <p>수학도 영어도 놓칠 수 없다면,<br/>문해력은 미리교과서로 준비하세요.</p>
+    <a class="cta-btn" href="#top">미리교과서 자세히 보기</a>
+  </div>
+</main>
+
+<div id="footerAcademy" class="academy-box" hidden>
+  <div class="academy-label">이 링크는 아래 학원에서 보내드렸어요</div>
+  <div id="academyName" class="academy-name"></div>
+  <div id="academyTel" class="academy-tel"></div>
+</div>
+
+<footer>미리교과서 · 학부모님께 드리는 안내</footer>
+
+<script>
+(function(){
+  function $(id){ return document.getElementById(id); }
+
+  // This is a plain static page (GitHub Pages), so window.location IS the
+  // real, public URL — unlike the claude.ai artifact viewer, nothing wraps
+  // or substitutes it. Query-string based personalization works here.
+  var params;
+  try { params = new URLSearchParams(window.location.search); } catch(e){ params = null; }
+  var name = params ? (params.get('name') || '').trim().slice(0, 30) : '';
+  var tel = params ? (params.get('tel') || '').trim().slice(0, 20) : '';
+
+  var toggleBtn = $('linkGenToggle');
+  var panel = $('genPanel');
+
+  if (name) {
+    // Personalized link: show the academy's info, hide the link generator.
+    if (toggleBtn) toggleBtn.hidden = true;
+    if (panel) panel.hidden = true;
+
+    var banner = $('academyBanner');
+    if (banner) {
+      banner.hidden = false;
+      $('academyBannerName').textContent = name;
+    }
+
+    var box = $('footerAcademy');
+    box.hidden = false;
+    $('academyName').textContent = name;
+    if (tel) {
+      var a = document.createElement('a');
+      a.href = 'tel:' + tel.replace(/[^0-9+]/g, '');
+      a.textContent = tel;
+      $('academyTel').appendChild(a);
+    }
+  } else if (toggleBtn && panel) {
+    // Base link: offer the generator so an academy can make its own personalized link.
+    var nameInput = $('genName');
+    var telInput = $('genTel');
+    var copyBtn = $('genCopy');
+
+    function refreshLink(){
+      var n = nameInput.value.trim().slice(0, 30);
+      var t = telInput.value.trim().slice(0, 20);
+
+      if (!n) {
+        $('genResult').hidden = true;
+        $('genCopied').hidden = true;
+        return;
+      }
+
+      try {
+        localStorage.setItem('mirigwa_academy_name', n);
+        localStorage.setItem('mirigwa_academy_tel', t);
+      } catch(e) {}
+
+      var base = window.location.origin + window.location.pathname;
+      var qs = new URLSearchParams();
+      qs.set('name', n);
+      if (t) qs.set('tel', t);
+
+      $('genUrl').value = base + '?' + qs.toString();
+      $('genResult').hidden = false;
+      $('genCopied').hidden = true;
+    }
+
+    try {
+      var savedName = localStorage.getItem('mirigwa_academy_name');
+      var savedTel = localStorage.getItem('mirigwa_academy_tel');
+      if (savedName) nameInput.value = savedName;
+      if (savedTel) telInput.value = savedTel;
+    } catch(e) {}
+    refreshLink();
+
+    nameInput.addEventListener('input', refreshLink);
+    telInput.addEventListener('input', refreshLink);
+
+    toggleBtn.addEventListener('click', function(){
+      var willShow = panel.hidden;
+      panel.hidden = !willShow;
+      toggleBtn.setAttribute('aria-expanded', String(willShow));
+      if (willShow) nameInput.focus();
+    });
+
+    copyBtn.addEventListener('click', function(){
+      var input = $('genUrl');
+      if (!input.value) return;
+      input.select();
+      input.setSelectionRange(0, 99999);
+      var done = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(input.value);
+          done = true;
+        }
+      } catch(e){}
+      if (!done) {
+        try { done = document.execCommand('copy'); } catch(e){}
+      }
+      if (done) {
+        $('genCopied').hidden = false;
+        setTimeout(function(){ $('genCopied').hidden = true; }, 2200);
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
